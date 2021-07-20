@@ -1,4 +1,8 @@
 import * as Router from '@koa/router';
+import chrome from './chrome';
 
-const router = new Router()
-export default router
+const api = new Router()
+
+api.use('/chrome', chrome.routes())
+
+export default api

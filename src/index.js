@@ -36,79 +36,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var puppeteer = require("puppeteer");
 var Koa = require("koa");
+var Router = require("@koa/router");
+var service_1 = require("./service");
+var router_1 = require("./router");
+var router = new Router();
 var app = new Koa();
+var chrome = new service_1.service.Chrome();
+router.use('/api', router_1["default"].routes());
+app.use(function (ctx, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, next()];
+            case 1:
+                _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                console.log(err_1);
+                ctx.status = err_1.statusCode || err_1.status || 400;
+                ctx.body = err_1.message;
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app
+    .use(router.routes())
+    .use(router.allowedMethods());
+app.use(function (ctx) {
+});
 app.listen(3000, function () {
     console.log("Server Listening to " + 3000);
 });
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var browser, page, imslpUrl, title, navigationPromise, v, content, result, contents;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, puppeteer.launch({ headless: false, devtools: true })];
-            case 1:
-                browser = _a.sent();
-                return [4 /*yield*/, browser.newPage()];
-            case 2:
-                page = _a.sent();
-                imslpUrl = 'https://imslp.org/wiki/';
-                title = 'Symphony_No.5%2C_Op.67_(Beethoven%2C_Ludwig_van)';
-                navigationPromise = page.waitForNavigation();
-                return [4 /*yield*/, page.goto(imslpUrl + title)];
-            case 3:
-                _a.sent();
-                return [4 /*yield*/, page.setViewport({ width: 1920, height: 937 })
-                    // await page.emulate(puppeteer.devices['iPhone 6']);
-                ];
-            case 4:
-                _a.sent();
-                // await page.emulate(puppeteer.devices['iPhone 6']);
-                return [4 /*yield*/, navigationPromise];
-            case 5:
-                // await page.emulate(puppeteer.devices['iPhone 6']);
-                _a.sent();
-                return [4 /*yield*/, page.waitForSelector('#wpscore_tabs > .jsonly > #tabScore2_tab > b > a')];
-            case 6:
-                _a.sent();
-                return [4 /*yield*/, page.click('#wpscore_tabs > .jsonly > #tabScore2_tab > b > a')];
-            case 7:
-                _a.sent();
-                v = '#wiki-body > div.body > div.mw-content-ltr > div.wi_body > table > tbody > tr';
-                return [4 /*yield*/, page.evaluate(function (v) {
-                        var anchors = Array.from(document.querySelectorAll(v));
-                        return anchors.map(function (anchor) {
-                            var _a;
-                            var th = anchor.querySelector('th').textContent.trim();
-                            var td = anchor.querySelector('td');
-                            return _a = {}, _a[th] = td, _a;
-                        });
-                    }, v)];
-            case 8:
-                content = _a.sent();
-                result = {
-                    '곡 제목': '',
-                    '작곡가': '',
-                    'Opus/Catalogue 번호': '',
-                    '조': '',
-                    '악장/섹션': [],
-                    '작곡년월': '',
-                    '평균 길이': '',
-                    '작곡시기': '',
-                    '곡 스타일': '',
-                    '악기별': ''
-                };
-                console.log(content);
-                contents = content.filter(function (x) { return result.hasOwnProperty(Object.keys(x)[0]) ? Object.keys(x)[0] : undefined; });
-                contents.map(function (content) {
-                    var key = Object.keys(content)[0];
-                    var value = Object.values(content);
-                    result[key] = value;
-                });
-                console.log(contents);
-                // result['악장/섹션'] = result['악장/섹션'].split('\n')
-                console.log(result);
-                return [2 /*return*/];
-        }
-    });
-}); })();
