@@ -5,6 +5,10 @@ class Chrome {
   page!: puppeteer.Page
   constructor() { }
 
+  public get isConnected(): boolean {
+    return this.browser.isConnected()
+  }
+
   async on() {
     this.browser = await puppeteer.launch({ headless: false, devtools: true })
     this.page = await this.browser.newPage()
