@@ -1,5 +1,5 @@
-import { Chrome } from "./chrome.service";
+import { chrome } from "./chrome.service";
 
 export const service = {
-  Chrome
+  chrome
 }

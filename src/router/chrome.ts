@@ -2,9 +2,11 @@ import * as Router from "@koa/router";
 import { service } from "../service";
 
 const router = new Router()
-
-router.get('/', (ctx) => {
-  ctx.body = 'Chrome'
+const chrome = service.chrome
+router.get('/', async (ctx) => {
+  await chrome.on()
+  const isConnected = chrome.browser.isConnected()
+  ctx.body = isConnected
 })
 
 export default router

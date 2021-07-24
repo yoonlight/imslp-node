@@ -1,11 +1,9 @@
 import * as Koa from 'koa';
 import * as Router from '@koa/router';
-import { service } from './service';
 import api from './router';
 
 const router = new Router();
 const app = new Koa();
-const chrome = new service.Chrome()
 
 router.use('/api', api.routes())
 
